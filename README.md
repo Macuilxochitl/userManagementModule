@@ -11,10 +11,14 @@ User management module
 
 安装方法
 ---
-本模块分为两部分，一部分是数据库部分，也就是Django的models.py。这一部分需要你手动添加本模块所需的数据库部分进models.py。另一部分就是模块本身，它不需要安装，直接放在项目内，要使用的时候import然后调用方法即可。
+本模块分为两部分，一部分是数据库部分，也就是Django的models.py。这一部分需要你手动添加本模块所需的数据库部分进models.py。
+
+另一部分就是模块本身，它不需要安装，直接放在项目内，要使用的时候import然后调用方法即可。
 
 1.将本模块的models.py部分的代码复制进你的app内的models.py.
+
 2.将本模块的umm.py复制进你的app内(与models.py同一目录内).
+
 3.在你自己的views中import并调用umm.py内的方法即可.
 
 比如你需要新增一个用户，只需要调用umm.py里的addUser方法即可，比如:
@@ -25,5 +29,6 @@ User management module
 注意事项
 ---
 本模块中对于用户的认证是基于cookie的，所以判断用户以及判断是否管理员的方法需要的参数为request. 
+
 在用户认证成功后(验证账号密码正确)后，要使用setCookie方法来设置cookie，否则无法识别用户.
 
