@@ -7,19 +7,23 @@ User management module
 
 这个模块只提供了最基础的功能，如创建用户，认证用户，设置管理员，管理员认证等。由于功能非常基础，所以也非常容易上手以及更改。
 
+本模块为一个独立的Django app，多个项目如果要使用同样的用户数据可以直接将本app复制到不同的项目使用即可。（Django项目要连接到同一个数据库。）
+
 因为本模块采用了Apache2协议，所以你可以对本模块进行改进以达到你需要的功能，比如让管理员可以在其用户名前显示一个很cooooool的前缀：）
 
 安装方法
 ---
-本模块分为两部分，一部分是数据库部分，也就是Django的models.py。这一部分需要你手动添加本模块所需的数据库部分进models.py。
+1.将authority复制入你Django项目的目录（与其他的app同样的位置）
 
-另一部分就是模块本身，它不需要安装，直接放在项目内，要使用的时候import然后调用方法即可。
+2.在你的Django项目中添加这个app: "authority"（如果你不知道怎么添加，请看本文档尾部。）
 
-1.将本模块的models.py部分的代码复制进你的app内的models.py.
+3.同步数据库，调用Django的方法
 
-2.将本模块的umm.py复制进你的app内(与models.py同一目录内).
+python manage.py makemigrations
 
-3.在你自己的views中import并调用umm.py内的方法即可.
+python manage.py migrate
+
+4.在你自己的views中import并调用module.py内的方法即可.
 
 比如你需要新增一个用户，只需要调用umm.py里的addUser方法即可，比如:
 >addUser(test,123456)
@@ -32,3 +36,27 @@ User management module
 
 在用户认证成功后(验证账号密码正确)后，要使用setCookie方法来设置cookie，否则无法识别用户.
 
+
+
+如何添加Django App
+---
+
+将app复制到Django项目的目录下以后，在你的项目的settings.py内找到
+
+> INSTALLED_APPS = [
+>
+> …,
+>
+> ]
+
+后，把app的名字添加到最后就好了，像这样
+
+> INSTALLED_APPS = [
+>
+> …,
+>
+> 'authority',
+>
+> ]
+
+就可以了。
