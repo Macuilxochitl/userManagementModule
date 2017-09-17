@@ -1,13 +1,13 @@
 import hashlib
-
+from authority.models import user as u
 def addUser(un,pw,ip=""):
-	from models import user as u
+	
 	
 	obj=u(username=un,password=pw,regIP=ip)
 	obj.save()
 	
 def delUser(un):
-	from models import user as u
+	
 	try:
 		obj=u.objects.get(username=un)
 		obj.delete()
@@ -15,8 +15,10 @@ def delUser(un):
 		return False
 	return True
 
-def changePassword(username):
-	from models import user as u
+def getUserList():
+	return u.objects.all()
+
+def changePassword(user,newpwd):
 	obj=u.objects.get(username=user)
 	newpwd=sha512(newpwd)
 	obj.password=newpwd
@@ -32,7 +34,7 @@ def getPasswd(un):
 	return obj.password
 
 def isLogin(request):#如果已登录，则返回登录用户的用户名；如果没登录，返回""
-	from models import user as u
+	
 	try:
 		un=request.COOKIES['user']
 	except:
@@ -52,7 +54,7 @@ def isLogin(request):#如果已登录，则返回登录用户的用户名；如�
 		return ""
 
 def isAdmin(request):#如果目前登录的用户是管理员，则返回True；如果目前登陆的用户不是管理员或没登录，则返回False
-	from models import user as u
+	
 	user=isLogin(request)
 	try:
 		user=u.objects.get(username=user)
