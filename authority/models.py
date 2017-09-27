@@ -1,4 +1,5 @@
 from django.db import models
+import random
 
 # Create your models here.
 class user(models.Model):
@@ -10,6 +11,10 @@ class user(models.Model):
 	lastLoginTime=models.DateTimeField(auto_now=True)
 	isAdmin=models.BooleanField(default=False)
 	regIP=models.CharField(max_length=60,default="")
+	isActivated=models.BooleanField(default=False)
+	actCode=models.IntegerField(default=0)
+	email=models.EmailField(max_length=100,default="")
+
 
 
 	def __str__(self):

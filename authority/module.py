@@ -1,9 +1,10 @@
 import hashlib
 from authority.models import user as u
-def addUser(un,pw,ip=""):
+import random
+def addUser(un,pw,ip="",em=""):
 	
 	
-	obj=u(username=un,password=pw,regIP=ip)
+	obj=u(username=un,password=pw,email=em,regIP=ip,actCode=random.randint(10000000,99999999))
 	obj.save()
 	
 def delUser(un):
@@ -25,9 +26,7 @@ def changePassword(user,newpwd):
 	obj.save()
 
 def getPasswd(un):
-	from Blog.models import user as u
 	try:
-		
 		obj=u.objects.get(username=un)
 	except:
 		return ""
@@ -47,7 +46,6 @@ def isLogin(request):#如果已登录，则返回登录用户的用户名；如�
 		value=request.COOKIES['password']
 	except:
 		return ""	
-
 	if value==getKey(un):
 		return un
 	else:
