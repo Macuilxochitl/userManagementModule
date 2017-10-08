@@ -1,7 +1,8 @@
 import hashlib
 from authority.models import user as u
 import random
-def addUser(un,pw,ip="",em=""):
+from django.shortcuts import render
+def addUser(un,pw,em,ip=""):
 	
 	
 	obj=u(username=un,password=pw,email=em,regIP=ip,actCode=random.randint(10000000,99999999))
@@ -27,6 +28,7 @@ def changePassword(user,newpwd):
 
 def getPasswd(un):
 	try:
+		
 		obj=u.objects.get(username=un)
 	except:
 		return ""
@@ -46,6 +48,7 @@ def isLogin(request):#如果已登录，则返回登录用户的用户名；如�
 		value=request.COOKIES['password']
 	except:
 		return ""	
+
 	if value==getKey(un):
 		return un
 	else:
@@ -67,16 +70,32 @@ def auth(username,passwd):
 	else:
 		return False
 
-def setCookie(request,username,jumpTo):
-	r=render(request,jumpTo)
-	r.set_cookie("user",username)
-	r.set_cookie("password",getKey(username))
+def setCookie(request,username,jumpTo,domain=""):
+	url={"url":jumpTo}
+
+	r=render(request,"jump.html",url)
+	if jumpTo=="":
+		jumpTo="/"
+	
+	if domain=="":
+		r.set_cookie("user",username)
+		r.set_cookie("password",getKey(username))
+	else:
+		r.set_cookie("user",username,domain=domain)
+		r.set_cookie("password",getKey(username),domain=domain)
 	return r
 
-def logout(request,jumpTo):
-	r=render(request,jumpTo)
-	r.set_cookie("user","")
-	r.set_cookie("password","")
+def logout(request,jumpTo,domain=""):
+	url={"url":jumpTo}
+	r=render(request,"jump.html",url)
+	if jumpTo=="":
+		jumpTo="/"
+	if domain=="":
+		r.set_cookie("user","")
+		r.set_cookie("password","")
+	else:
+		r.set_cookie("user","",domain=domain)
+		r.set_cookie("password","",domain=domain)
 	return r
 
 def getKey(username):
