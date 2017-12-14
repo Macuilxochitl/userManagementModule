@@ -2,6 +2,9 @@ import hashlib
 from authority.models import user as u
 import random
 from django.shortcuts import render
+
+debug=False #开启以后所有认证都会返回是admin
+
 def addUser(un,pw,em,ip=""):
 	
 	
@@ -16,6 +19,13 @@ def delUser(un):
 	except:
 		return False
 	return True
+
+def isExist(un):
+	try:
+		obj=u.objects.get(username=un)
+		return True
+	except:
+		return False
 
 def getUserList():
 	return u.objects.all()
@@ -35,6 +45,9 @@ def getPasswd(un):
 	return obj.password
 
 def isLogin(request):#如果已登录，则返回登录用户的用户名；如果没登录，返回""
+
+	if debug==True:
+		return "admin"
 	
 	try:
 		un=request.COOKIES['user']
@@ -55,6 +68,9 @@ def isLogin(request):#如果已登录，则返回登录用户的用户名；如�
 		return ""
 
 def isAdmin(request):#如果目前登录的用户是管理员，则返回True；如果目前登陆的用户不是管理员或没登录，则返回False
+
+	if debug==True:
+		return True
 	
 	user=isLogin(request)
 	try:

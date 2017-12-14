@@ -18,4 +18,4 @@ class user(models.Model):
 
 
 	def __str__(self):
-		return "username="+self.username+",password="+self.password+",createTime="+self.createTime.strftime('%y-%m-%d %H:%M:%S')+",lastLoginTime="+self.lastLoginTime.strftime('%y-%m-%d %H:%M:%S')+",ip="+self.regIP
+		return "email="+self.email+",username="+self.username+",password="+self.password+",createTime="+self.createTime.strftime('%y-%m-%d %H:%M:%S')+",lastLoginTime="+self.lastLoginTime.strftime('%y-%m-%d %H:%M:%S')+",ip="+self.regIP
